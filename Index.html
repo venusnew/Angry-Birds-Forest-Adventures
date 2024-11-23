@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angry Birds Forest Adventure</title>
+    <script>
+        // Configuración de la ruta pública para Ruffle
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.RufflePlayer.config = {
+            publicPath: "./"
+        };
+    </script>
+    <script src="ruffle.js"></script>
+    <script>
+        // Configuración del SDK de GameMonetize.com
+        window.SDK_OPTIONS = {
+            gameId: "yee9v71p1ofp4dk3ad5q9xbt8rr2bpah", // Reemplaza con tu gameId de GameMonetize
+            onEvent: function (a) {
+                switch (a.name) {
+                    case "SDK_GAME_PAUSE":
+                        // Pausar juego / silenciar audio
+                        console.log("Juego pausado");
+                        break;
+                    case "SDK_GAME_START":
+                        // Reanudar juego / activar audio
+                        console.log("Anuncio finalizado, reanudando juego");
+                        break;
+                    case "SDK_READY":
+                        // SDK listo para usar
+                        console.log("SDK listo");
+                        break;
+                    case "SDK_ERROR":
+                        // Manejar errores
+                        console.error("Error en el SDK", a);
+                        break;
+                }
+            }
+        };
+        (function (a, b, c) {
+            var d = a.getElementsByTagName(b)[0];
+            a.getElementById(c) || (a = a.createElement(b), a.id = c, 
+            a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d));
+        })(document, "script", "gamemonetize-sdk");
+    </script>
+</head>
+<body style="margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div id="game-container">
+        <script>
+            // Inicialización de Ruffle y carga del juego
+            var ruffle = RufflePlayer.newest();
+            var player = ruffle.createPlayer();
+            document.getElementById("game-container").appendChild(player);
+            player.load("angry-birds-forest-adventure.swf");
+
+            // Ejemplo: Mostrar un anuncio al iniciar el juego
+            function startGame() {
+                if (typeof sdk !== "undefined" && sdk.showBanner) {
+                    sdk.showBanner(); // Muestra un anuncio antes de comenzar el juego
+                }
+                console.log("Juego iniciado");
+            }
+
+            // Llamar al inicio del juego después de una interacción del usuario
+            document.body.addEventListener("click", startGame);
+        </script>
+    </div>
+</body>
+</html>
